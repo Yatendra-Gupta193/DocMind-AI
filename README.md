@@ -22,7 +22,7 @@ DocMind AI allows users to upload a PDF and ask natural language questions about
 
 ![Main Interface](assets/2.png)
 
-![Main Interface](assets/3.png)
+![Main Interface](assets/3.png) 
 
 ---
 
