@@ -274,3 +274,7 @@ Planned future improvements:
 # 👨‍💻 Author : Yatendra Kumar Gupta
 
 ---
+
+## ⭐ Support
+
+If you found this project helpful, please consider giving it a **⭐ Star** on GitHub!# RAGDoc_Assistant
