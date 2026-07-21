@@ -20,9 +20,9 @@ DocMind AI allows users to upload a PDF and ask natural language questions about
 
 ### 💬 Main Chat Interface
 
-![Main Interface](assets/1.png)
-
 ![Main Interface](assets/2.png)
+
+![Main Interface](assets/3.png)
 
 ---
 
