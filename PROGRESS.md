@@ -1,4 +1,4 @@
-# Project Upgrade: Adaptive RAG Ingestion Pipeline
+# Project Upgrade: Adaptive RAG Ingestion Pipeline 
 
 ## Roadmap
 - [x] Explore existing codebase (upload/parsing)
