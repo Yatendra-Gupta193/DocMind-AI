@@ -1,4 +1,4 @@
-# 🚀 DocMind AI  
+# 🚀 DocMind AI   
  
 An AI-powered document question answering application built using **FastAPI**, **LangChain**, **ChromaDB**, **OpenAI Embeddings**, **Mistral AI**, and **Next.js**.
 
