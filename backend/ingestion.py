@@ -1,121 +1,92 @@
 import sys
 import os
-import shutil
+import time
+
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEmbeddings
-# from langchain_community.vectorstores import Chroma
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_chroma import Chroma
-import time
 from dotenv import load_dotenv
+
 
 start = time.time()
 
 load_dotenv()
 
-# Function for loading file.
+
+# Function for loading PDF
 def load_file(file_path):
     loader = PyPDFLoader(file_path=file_path)
     document = loader.load()
-    # print(len(document))
-
-    # Count no of pages
-    # print(f"Total no of pages is : {len(document)}")
-    # print("*"*50)
-
-    # # First page content
-    # print(f"First Page Content: -\n {document[0]}")
-    # print("*"*50)
 
     print(time.time() - start)
     return document
 
-# Function for splitting into chunks
+
+# Function for splitting document into chunks
 def split_document(document):
-    # print(len(document))
-    chunks = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200).split_documents(document)
-    # print("chunks")
-    # print(len(document[0].page_content))
-    # print(chunks)
+
+    chunks = RecursiveCharacterTextSplitter(
+        chunk_size=1000,
+        chunk_overlap=200
+    ).split_documents(document)
 
     print(time.time() - start)
     return chunks
 
-# Function for creating a vectorstore
-embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
-print("=" * 50)
-print("Embedding Model Loaded")
-print(type(embedding_model))
-print("=" * 50)
+# Gemini Embedding Model
+embedding_model = GoogleGenerativeAIEmbeddings(
+    model="gemini-embedding-001",
+    api_key=os.getenv("GEMINI_API_KEY")
+)
 
+
+# Function for creating vector store
 def create_vector_store(chunks):
 
     print("Creating embeddings...")
 
-    vectorstore = Chroma(persist_directory="chroma_db", embedding_function=embedding_model)
+    vectorstore = Chroma(
+        persist_directory="chroma_db",
+        embedding_function=embedding_model
+    )
 
-    # Reseting ChromaDB
+    # Reset ChromaDB
     if os.path.exists("chroma_db"):
-        # shutil.rmtree("chroma_db")
-        # print("Deleted ChromaDB!!")
         vectorstore.reset_collection()
 
     vectorstore.add_documents(chunks)
 
     print("Embeddings stored successfully")
-
     print("Stored in ChromaDB")
-    
     print(time.time() - start)
+
     return vectorstore
 
-# Function to delete the ChromaDB and uploaded file
-def reset_knowledge_base():        
-    
+
+# Function to delete uploaded file
+def reset_knowledge_base():
+
     folder_path = "uploads"
+
     if os.path.exists(folder_path):
+
         contents = os.listdir(folder_path)
+
         if not contents:
             print("The folder is already empty. No action taken.")
+
         else:
             for item in contents:
-                os.remove(os.path.join(folder_path, item))
+
+                item_path = os.path.join(folder_path, item)
+
+                if os.path.isfile(item_path):
+                    os.remove(item_path)
 
             print("Uploaded file deleted.!!")
 
     return "Everything clear and ready to use."
-
-
-# embedding_model = OpenAIEmbeddings(model="text-embedding-3-small")
-# vectorstore = Chroma(persist_directory="chroma_db", embedding_function=embedding_model)
-
-# def get_splitter(file_type: str):
-#     if file_type == "pdf":
-#         return RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-#     elif file_type == "docx":
-#         return RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-#     else:
-#         return RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
-
-# def ingest_document(file_path: str):
-#     file_extension = os.path.splitext(file_path)[1].lower()
-    
-#     if file_extension == ".pdf":
-#         loader = PyPDFLoader(file_path)
-#         file_type = "pdf"
-#     elif file_extension == ".docx":
-#         loader = UnstructuredWordDocumentLoader(file_path)
-#         file_type = "docx"
-#     else:
-#         loader = TextLoader(file_path)
-#         file_type = "text"
-        
-#     docs = loader.load()
-#     splitter = get_splitter(file_type)
-#     chunks = splitter.split_documents(docs)
-    
-#     vectorstore.add_documents(chunks)
-#     return f"Processed {len(chunks)} chunks"
