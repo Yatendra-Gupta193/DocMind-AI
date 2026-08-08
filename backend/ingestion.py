@@ -5,7 +5,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_openai import OpenAIEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 # from langchain_community.vectorstores import Chroma
 from langchain_chroma import Chroma
 import time
@@ -44,7 +44,13 @@ def split_document(document):
     return chunks
 
 # Function for creating a vectorstore
-embedding_model = OpenAIEmbeddings(model="text-embedding-3-small")
+embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+
+print("=" * 50)
+print("Embedding Model Loaded")
+print(type(embedding_model))
+print("=" * 50)
+
 def create_vector_store(chunks):
 
     print("Creating embeddings...")

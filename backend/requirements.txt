@@ -15,3 +15,14 @@ chromadb
 pypdf
 
 tiktoken
+
+langchain-core
+langchain-community
+langchain-mistralai
+langchain-chroma
+chromadb
+pypdf
+tiktoken
+
+langchain-huggingface
+sentence-transformers
