@@ -6,10 +6,6 @@ DocMind AI allows users to upload a PDF and ask natural language questions about
 
 ---
 
-# 🌐 Live Application:  https://doc-mind-ai-opal.vercel.app/ 
-
----
-
 ## 📸 Screenshots
 
 ### 🏠 Landing Page
